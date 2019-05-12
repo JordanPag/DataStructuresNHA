@@ -22,7 +22,7 @@ class Course {
   }
 
   setMentor(mentor) {
-    console.log("You can't set a mentor! Try addMentor() instead.")
+    console.log("You can't set a mentor! Try addMentor() instead."); //This method is supposed to be private
   }
 
   addMentor(mentor) {
@@ -31,7 +31,8 @@ class Course {
     }
   }
 
-  addMentors(mentors) {
+  setMentors(mentors) {
+    this.mentors = [];
     for(let i=0; i<mentors.length; i++) {
       if(!this.isMentorInTheClass(mentors[i])) {
         this.mentors.push(mentors[i]);
