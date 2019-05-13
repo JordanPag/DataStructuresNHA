@@ -32,12 +32,7 @@ class Course {
   }
 
   setMentors(mentors) {
-    this.mentors = [];
-    for(let i=0; i<mentors.length; i++) {
-      if(!this.isMentorInTheClass(mentors[i])) {
-        this.mentors.push(mentors[i]);
-      }
-    }
+    this.mentors.concat(mentors);
   }
 
   get mentorSize() {
@@ -45,7 +40,7 @@ class Course {
   }
 
   removeMentor(mentor) {
-    let index = this.mentors.indexOf(mentor);
+    const index = this.mentors.indexOf(mentor);
     if (index > -1) {
        this.mentors.splice(index, 1);
     }
