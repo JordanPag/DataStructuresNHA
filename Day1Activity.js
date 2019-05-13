@@ -1,0 +1,30 @@
+let p = new Person("Nano", "Droid", "droid@nanohackers.org");
+console.log(p.name);
+console.log(p.getNameAndEmail());
+
+let droid = new Nano("Droid", "droid@nanohackers.org");
+let noah = new Nano("Noah", "noah@nanohackers.org");
+let olivia = new Nano("Olivia", "olivia@nanohackers.org");
+let jordan = new Nano("Jordan", "jordan@nanohackers.org");
+let giordan = new Nano("Giordan", "giordan@nanohackers.org");
+let lucas = new Nano("Lucas", "lucas@nanohackers.org");
+
+let course = new Course("Data Structures");
+course.addStudent(droid);
+course.addStudent(noah);
+course.addStudent(olivia);
+course.addStudent(jordan);
+course.addStudent(giordan);
+course.addStudent(lucas);
+console.log(course.classSize);
+let mentor1 = new Mentor("Griselle", "griselle@nanohackers.org");
+let mentor2 = new Mentor("Ricky", "ricky@nanohackers.org");
+course.setMentor(mentor1); 
+course.addMentor(mentor1);
+course.setMentors([mentor1, mentor2]);
+console.log(course.mentorSize);
+course.removeMentor(mentor1);
+console.log(course.isNanoInTheClass(droid));
+course.removeStudent(droid);
+console.log(course.isNanoInTheClass(droid));
+console.log(course.rosterSortedAlphabetically());
