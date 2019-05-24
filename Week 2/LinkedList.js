@@ -4,9 +4,9 @@ class LinkedList {
     this._length = 0;
   }
 
-  add(value) {
+  add(data) {
     this._length++;
-    let node = new Node(value);
+    let node = new Node(data);
     let last = this.head;
     if(this.head == null) {
       this.head = node;
@@ -18,16 +18,16 @@ class LinkedList {
     last.next = node;
   }
 
-  remove(value) {
+  remove(data) {
     this._length--;
     let current = this.head;
     let prev = null;
-    if(current != null && current.value == value) {
+    if(current != null && current.data == data) {
       this.head = current.next;
       return
     }
 
-    while(current != null && current.value != value) {
+    while(current != null && current.data != data) {
         prev = current;
         current = current.next;
     }
@@ -38,27 +38,27 @@ class LinkedList {
   }
 
   peek() {
-    return "The first value is " + this.head.value;
+    return "The first data is " + this.head.data;
   }
 
   get length() {
     return this._length;
   }
 
-  contains(value) {
+  contains(data) {
     let found = false;
     let last = this.head;
     while(!found && last.next != null) {
-      if(last.value == value) {
+      if(last.data == data) {
         found = true;
       } else {
         last = last.next;
       }
     }
     if(found) {
-      return value + " is in the list";
+      return data + " is in the list";
     } else {
-      return value + " is not in the list";
+      return data + " is not in the list";
     }
   }
 
@@ -66,10 +66,10 @@ class LinkedList {
     let last = this.head;
     let list = "";
     while(last.next != null) {
-      list += last.value + ", ";
+      list += last.data + ", ";
       last = last.next;
     }
-    list += last.value;
+    list += last.data;
     console.log(list);
   }
 }

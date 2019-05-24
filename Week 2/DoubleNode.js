@@ -1,12 +1,12 @@
 class DoubleNode {
-  constructor(value) {
-    this._value = value;
+  constructor(data) {
+    this._data = data;
     this._next = null;
     this._prev = null;
   }
 
-  get value() {
-    return this._value;
+  get data() {
+    return this._data;
   }
 
   get next() {
@@ -17,8 +17,8 @@ class DoubleNode {
     return this._prev;
   }
 
-  set value(value) {
-    this._value = value;
+  set data(data) {
+    this._data = data;
   }
 
   set next(pointer) {
