@@ -89,17 +89,18 @@ class BinarySearchTree {
   }
 
   breadthFirstTraversal() {
-    let order = "";
     if(this.root == null) {
       return "No tree";
     }
-    order += this.root.value + " ";
+    let order = this.root.value + " ";
+    let nodes = [this.root];
     let row = [this.root];
     let nextRow = [];
     for(let currentHeight = 1; currentHeight < this._height; currentHeight++) {
       for(let i=0; i<row.length; i++) {
         if(row[i].left != null) {
           order += row[i].left.value + " ";
+          nodes.push(row[i].left);
           nextRow.push(row[i].left);
         }
         if(row[i].right != null) {
@@ -108,6 +109,7 @@ class BinarySearchTree {
           } else {
             order += row[i].right.value + " ";
           }
+          nodes.push(row[i].right);
           nextRow.push(row[i].right);
         }
       }
@@ -115,7 +117,7 @@ class BinarySearchTree {
       nextRow = [];
     }
 
-    return order;
+    return [order, nodes];
   }
 
   preorderTraversal() {
@@ -215,7 +217,7 @@ class BinarySearchTree {
     let tree = "";
     let lengthBefore = 0;
     let powerOfTwo = 2;
-    let values = this.breadthFirstTraversal().split(" ");
+    let nodes = this.breadthFirstTraversal()[1];
     let orderedValues = this.inorderTraversal().split(" ");
     for(let i=0; i<orderedValues.length; i++) {
       if(Number(orderedValues[i]) < this.root.value) {
@@ -225,13 +227,34 @@ class BinarySearchTree {
     for(let j=0; j<lengthBefore; j++) {
       tree += " ";
     }
-    tree += values[0] + "\n";
-    for(let i=1; i<values.length; i++) {
-      lengthBefore = this.getLengthBefore(Number(values[i]), Number(values[i-1]));
+    tree += nodes[0].value + "\n";
+    let numAppears = 0;
+    let thisAppearance = 0;
+    let prevAppearance = 0;
+    for(let i=1; i<nodes.length; i++) {
+      numAppears = 0;
+      for(let j=0; j<nodes.length; j++) {
+        if(nodes[j].value == nodes[i].value) {
+          numAppears++;
+          if(nodes[j] === nodes[i]) {
+            thisAppearance = numAppears;
+          }
+        }
+      }
+      numAppears = 0;
+      for(let j=0; j<nodes.length; j++) {
+        if(nodes[j].value == nodes[i-1].value) {
+          numAppears++;
+          if(nodes[j] === nodes[i-1]) {
+            prevAppearance = numAppears;
+          }
+        }
+      }
+      lengthBefore = this.getLengthBefore(nodes[i].value, nodes[i-1].value, thisAppearance, prevAppearance);
       for(let j=0; j<lengthBefore; j++) {
         tree += " ";
       }
-      tree += values[i];
+      tree += nodes[i].value;
       if(i == (2 ** powerOfTwo) - 2) {
         //New line
         tree += "\n";
@@ -241,14 +264,22 @@ class BinarySearchTree {
     console.log(tree);
   }
 
-  getLengthBefore(val, valPrev) {
+  getLengthBefore(val, valPrev, thisAppearance, prevAppearance) {
     let length = 0;
+    let tempAppears = 1;
+    let tempPrevAppears = 0;
     let orderedValues = this.inorderTraversal().split(" ");
     for(let i=0; i<orderedValues.length; i++) {
       if(Number(orderedValues[i]) < val) {
         length += orderedValues[i].length;
+      } else if(Number(orderedValues[i]) == val && tempAppears < thisAppearance) {
+        tempAppears++;
+        length += orderedValues[i].length;
       }
-      if(Number(orderedValues[i]) == valPrev && valPrev < val) {
+      if(Number(orderedValues[i]) == valPrev) {
+        tempPrevAppears++;
+      }
+      if(Number(orderedValues[i]) == valPrev && valPrev < val && tempPrevAppears == prevAppearance) {
         length = 0;
       }
     }
