@@ -4,6 +4,7 @@ class Node {
     this._parent = null;
     this._left = null;
     this._right = null;
+    this._depth = null;
   }
 
   get value() {
@@ -22,6 +23,10 @@ class Node {
     return this._right;
   }
 
+  get depth() {
+    return this._depth;
+  }
+
   set value(val) {
     this._value = val;
   }
@@ -36,5 +41,9 @@ class Node {
 
   set right(pointer) {
     this._right = pointer;
+  }
+
+  set depth(h) {
+    this._depth = h;
   }
 }

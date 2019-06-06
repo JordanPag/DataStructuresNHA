@@ -12,6 +12,7 @@ class BinarySearchTree {
     if(this.root == null) {
       this.root = node;
       this._height++;
+      this.root.height = this._height - 1;
     } else {
       let next;
       let prev = this.root;
@@ -39,6 +40,7 @@ class BinarySearchTree {
         prev.right = node;
       }
       node.parent = prev;
+      node.height = height - 1;
     }
   }
 
@@ -165,7 +167,7 @@ class BinarySearchTree {
         order += values[i].value + " ";
       }
     }
-    return order;
+    return [order, values];
   }
 
   inorderHelper(node, values) {
@@ -216,70 +218,47 @@ class BinarySearchTree {
     }
     let tree = "";
     let lengthBefore = 0;
-    let powerOfTwo = 2;
+    let currentHeight = 0;
     let nodes = this.breadthFirstTraversal()[1];
-    let orderedValues = this.inorderTraversal().split(" ");
-    for(let i=0; i<orderedValues.length; i++) {
-      if(Number(orderedValues[i]) < this.root.value) {
+    let orderedNodes = this.inorderTraversal()[1];
+    let orderedValues = this.inorderTraversal()[0].split(" ");
+
+    for(let i=0; i<orderedNodes.length; i++) {
+      if(orderedNodes[i].value < this.root.value) {
         lengthBefore += orderedValues[i].length;
       }
     }
     for(let j=0; j<lengthBefore; j++) {
       tree += " ";
     }
-    tree += nodes[0].value + "\n";
-    let numAppears = 0;
-    let thisAppearance = 0;
-    let prevAppearance = 0;
+    tree += nodes[0].value;
+
     for(let i=1; i<nodes.length; i++) {
-      numAppears = 0;
-      for(let j=0; j<nodes.length; j++) {
-        if(nodes[j].value == nodes[i].value) {
-          numAppears++;
-          if(nodes[j] === nodes[i]) {
-            thisAppearance = numAppears;
-          }
-        }
+      lengthBefore = this.getLengthBefore(nodes[i], nodes[i-1]);
+      if(nodes[i].height > currentHeight) {
+        currentHeight++;
+        tree += "\n";
       }
-      numAppears = 0;
-      for(let j=0; j<nodes.length; j++) {
-        if(nodes[j].value == nodes[i-1].value) {
-          numAppears++;
-          if(nodes[j] === nodes[i-1]) {
-            prevAppearance = numAppears;
-          }
-        }
-      }
-      lengthBefore = this.getLengthBefore(nodes[i].value, nodes[i-1].value, thisAppearance, prevAppearance);
-      for(let j=0; j<lengthBefore; j++) {
+      for(let i=0; i<lengthBefore; i++) {
         tree += " ";
       }
-      tree += nodes[i].value;
-      if(i == (2 ** powerOfTwo) - 2) {
-        //New line
-        tree += "\n";
-        powerOfTwo++;
-      }
+      tree += nodes[i].value
     }
+
     console.log(tree);
   }
 
-  getLengthBefore(val, valPrev, thisAppearance, prevAppearance) {
+  getLengthBefore(node, nodePrev) {
     let length = 0;
-    let tempAppears = 1;
-    let tempPrevAppears = 0;
-    let orderedValues = this.inorderTraversal().split(" ");
-    for(let i=0; i<orderedValues.length; i++) {
-      if(Number(orderedValues[i]) < val) {
+    let orderedNodes = this.inorderTraversal()[1];
+    let orderedValues = this.inorderTraversal()[0].split(" ");
+    for(let i=0; i<orderedNodes.length; i++) {
+      if(orderedNodes[i].value < node.value) {
         length += orderedValues[i].length;
-      } else if(Number(orderedValues[i]) == val && tempAppears < thisAppearance) {
-        tempAppears++;
+      } else if(orderedNodes[i].value == node.value && orderedNodes[i].depth < node.depth) {
         length += orderedValues[i].length;
       }
-      if(Number(orderedValues[i]) == valPrev) {
-        tempPrevAppears++;
-      }
-      if(Number(orderedValues[i]) == valPrev && valPrev < val && tempPrevAppears == prevAppearance) {
+      if(orderedNodes[i].value == nodePrev.value && nodePrev.value < node.value && orderedNodes[i].depth == nodePrev.depth) {
         length = 0;
       }
     }
