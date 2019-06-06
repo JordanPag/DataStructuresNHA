@@ -12,7 +12,7 @@ class BinarySearchTree {
     if(this.root == null) {
       this.root = node;
       this._height++;
-      this.root.height = this._height - 1;
+      this.root.depth = this._height - 1;
     } else {
       let next;
       let prev = this.root;
@@ -40,7 +40,7 @@ class BinarySearchTree {
         prev.right = node;
       }
       node.parent = prev;
-      node.height = height - 1;
+      node.depth = height - 1;
     }
   }
 
@@ -221,6 +221,7 @@ class BinarySearchTree {
     let currentHeight = 0;
     let nodes = this.breadthFirstTraversal()[1];
     let orderedNodes = this.inorderTraversal()[1];
+    console.log(orderedNodes);
     let orderedValues = this.inorderTraversal()[0].split(" ");
 
     for(let i=0; i<orderedNodes.length; i++) {
@@ -235,7 +236,7 @@ class BinarySearchTree {
 
     for(let i=1; i<nodes.length; i++) {
       lengthBefore = this.getLengthBefore(nodes[i], nodes[i-1]);
-      if(nodes[i].height > currentHeight) {
+      if(nodes[i].depth > currentHeight) {
         currentHeight++;
         tree += "\n";
       }
@@ -258,7 +259,7 @@ class BinarySearchTree {
       } else if(orderedNodes[i].value == node.value && orderedNodes[i].depth < node.depth) {
         length += orderedValues[i].length;
       }
-      if(orderedNodes[i].value == nodePrev.value && nodePrev.value < node.value && orderedNodes[i].depth == nodePrev.depth) {
+      if(orderedNodes[i] === nodePrev && nodePrev.depth == node.depth) {
         length = 0;
       }
     }

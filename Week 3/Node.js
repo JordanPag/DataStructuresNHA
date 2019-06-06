@@ -43,7 +43,7 @@ class Node {
     this._right = pointer;
   }
 
-  set depth(h) {
-    this._depth = h;
+  set depth(d) {
+    this._depth = d;
   }
 }
