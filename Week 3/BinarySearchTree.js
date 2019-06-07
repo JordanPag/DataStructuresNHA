@@ -75,10 +75,9 @@ class BinarySearchTree {
   }
 
   includes(val) {
-    let iteration = 0;
     let next = this.root;
     let found = false;
-    while(iteration < this._height && next != null && found == false) {
+    while(next != null && found == false) {
       if(val < next.value) {
         next = next.left;
       } else if(val > next.value) {
@@ -87,7 +86,10 @@ class BinarySearchTree {
         found = true;
       }
     }
-    return "Tree includes " + val + ": " + found;
+    if(found) {
+      return [found, next];
+    }
+    return [found];
   }
 
   breadthFirstTraversal() {
@@ -292,5 +294,53 @@ class BinarySearchTree {
     root.right = this.buildTreeWith(values, center+1, end, root, depth);
 
     return root;
+  }
+
+  remove(value) {
+    if(!this.includes(value)[0]) {
+      console.log("value does not exist and cannot be removed");
+    } else {
+      let node = this.includes(value)[1];
+      if(node.left == null && node.right == null) {
+        //The node has no children
+        if(node.parent.left === node) {
+          node.parent.left = null;
+        } else {
+          node.parent.right = null;
+        }
+      } else if(node.left == null && node.right || node.right == null && node.left) {
+        //The node has one child
+        let children = [];
+        children = this.inorderHelper(node, children);
+        let childDirection;
+        if(node.left) {
+          childDirection = "left";
+        } else {
+          childDirection = "right";
+        }
+        if(node.parent.left === node) {
+          node.parent.left = node[childDirection];
+          node[childDirection].parent = node.parent;
+        } else {
+          node.parent.right = node[childDirection];
+          node[childDirection].parent = node.parent;
+        }
+        for(let i=0; i<children.length; i++) {
+          children[i].depth -= 1;
+        }
+      } else {
+        //The node has 2 children
+        
+      }
+    }
+    let bft = this.breadthFirstTraversal()[1];
+    let treeHeight = 0;
+    for(let i=0; i<bft.length; i++) {
+      if(bft[i].depth > treeHeight - 1) {
+        treeHeight++;
+      }
+    }
+    this._height = treeHeight;
+    this._count--;
   }
 }
