@@ -221,7 +221,6 @@ class BinarySearchTree {
     let currentHeight = 0;
     let nodes = this.breadthFirstTraversal()[1];
     let orderedNodes = this.inorderTraversal()[1];
-    console.log(orderedNodes);
     let orderedValues = this.inorderTraversal()[0].split(" ");
 
     for(let i=0; i<orderedNodes.length; i++) {
@@ -264,5 +263,34 @@ class BinarySearchTree {
       }
     }
     return length;
+  }
+
+  rebalanceTree() {
+    let orderedNodes = this.inorderTraversal()[1];
+    let values = [];
+    for(let i=0; i<orderedNodes.length; i++) {
+      values.push(orderedNodes[i].value);
+    }
+
+    this.root = this.buildTreeWith(values, 0, this._count - 1, null, 0);
+    this.drawTree();
+  }
+
+  buildTreeWith(values, start, end, parent, depth) {
+    if (start > end || values.length == 0) {
+      return null;
+    }
+
+    let center = Math.floor((start + end)/2);
+    let root = new Node();
+    root.value = values[center];
+    root.depth = depth;
+    depth++;
+    root.parent = parent;
+
+    root.left  = this.buildTreeWith(values, start, center-1, root, depth);
+    root.right = this.buildTreeWith(values, center+1, end, root, depth);
+
+    return root;
   }
 }

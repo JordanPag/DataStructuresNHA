@@ -54,3 +54,15 @@ console.log("Min: " + tree2.min.value);
 console.log("Max: " + tree2.max.value);
 console.log("Breadth First Traversal: " + tree2.breadthFirstTraversal()[0]);
 tree2.drawTree();
+tree2.rebalanceTree();
+
+let tree3 = new BinarySearchTree();
+tree3.add(1);
+tree3.add(2);
+tree3.add(3);
+tree3.add(4);
+tree3.add(5);
+tree3.add(6);
+tree3.add(7);
+tree3.drawTree();
+tree3.rebalanceTree();
