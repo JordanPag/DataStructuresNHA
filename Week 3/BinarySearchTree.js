@@ -330,7 +330,15 @@ class BinarySearchTree {
         }
       } else {
         //The node has 2 children
-        
+        let rightChildren = []; //Children to the right of the node, in order
+        rightChildren = this.inorderHelper(node.right, rightChildren);
+        let replacement = rightChildren[0];
+        let value = replacement.value;
+        node.value--;
+        let count = this._count;
+        this.remove(replacement.value);
+        this._count = count;
+        node.value = value;
       }
     }
     let bft = this.breadthFirstTraversal()[1];
